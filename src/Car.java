@@ -50,7 +50,6 @@ public class Car extends Vehicle {
     /**
      * Test harness
      * 
-     * @param args
      * @return Whether or the class passed the test
      */
     public static boolean main() {

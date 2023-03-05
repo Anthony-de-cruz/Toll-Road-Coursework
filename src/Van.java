@@ -54,7 +54,6 @@ public class Van extends Vehicle {
     /**
      * Test harness
      * 
-     * @param args
      * @return Whether or the class passed the test
      */
     public static boolean main() {
