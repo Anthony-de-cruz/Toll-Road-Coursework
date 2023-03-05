@@ -1,5 +1,3 @@
-package main.java;
-
 /**
  * @author Anthony de Cruz
  */
@@ -18,6 +16,8 @@ public class TollRoadMain {
         boolean passed = true;
 
         passed = passed && Car.main();
+        passed = passed && Truck.main();
+        passed = passed && Van.main();
 
         if (passed) {
             System.out.println("<-- All tests passed :) -->");

@@ -1,5 +1,3 @@
-package main.java;
-
 /**
  * Thrown when the account has insufficient balance to complete the transaction.
  */

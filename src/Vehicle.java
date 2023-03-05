@@ -1,5 +1,3 @@
-package main.java;
-
 /**
  * An abstract class to be extended by different types of vehicles, such as cars
  * or vans.

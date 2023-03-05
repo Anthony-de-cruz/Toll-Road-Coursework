@@ -1,5 +1,3 @@
-package main.java;
-
 /**
  * Thrown when the customer cannot be found.
  */

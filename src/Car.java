@@ -1,5 +1,3 @@
-package main.java;
-
 import java.util.HashMap;
 
 public class Car extends Vehicle {
@@ -15,7 +13,7 @@ public class Car extends Vehicle {
 
         super(registration, manufacturer);
 
-        if (!(numberOfSeats > 0)) {
+        if (numberOfSeats < 1) {
             throw new IllegalArgumentException("Cannot have zero or less seats.");
         }
 
@@ -95,7 +93,7 @@ public class Car extends Vehicle {
 
             invalidCar.calculateBasicTripCost();
 
-            System.out.println("Invalid case: FAILED: Exception not thrown when seats were negative.");
+            System.out.println("Invalid case: FAILED: Exception not thrown when seats were below 1.");
             return false;
 
         } catch (IllegalArgumentException exception) {
