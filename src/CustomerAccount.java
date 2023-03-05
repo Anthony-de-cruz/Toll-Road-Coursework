@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Customer account class to represent individual customers.
  */
@@ -125,6 +127,62 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
 
     public Discounts getDiscount() {
         return this.discount;
+    }
+
+    /* -------------------------------- Unit test ------------------------------- */
+
+    /**
+     * Test harness
+     * 
+     * @return Whether or the class passed the test
+     */
+    public static boolean main() {
+
+        // Valid test
+        // A collection of customer accounts with some funds to add and the expected balance after a trip.
+        try {
+
+            // (CustomerAccount, funds to add, final funds expected)
+            HashMap<CustomerAccount, int[]> validCstmr = new HashMap<>();
+
+            validCstmr.put(new CustomerAccount("Jimmy", "Jones", 1500,
+                    new Car("ee", "Honda", 5)), new int[]{0, 1000});
+            validCstmr.put(new CustomerAccount("Bob", "Bones", 2400,
+                    new Car("eee", "Bonda", 8)), new int[]{200, 2000});
+            validCstmr.put(new CustomerAccount("Bobby", "Rones", 2000,
+                    new Van("eeee", "Bondaee", 1000)), new int[]{1000, 2000});
+            
+            
+            for (CustomerAccount customerAccount : validCstmr.keySet()) {
+
+                customerAccount.addFunds(validCstmr.get(customerAccount)[0]);
+                customerAccount.makeTrip();
+
+                if (customerAccount.getBalance() != validCstmr.get(customerAccount)[1]) {
+
+                    System.out.println("Expected: " +
+                        validCstmr.get(customerAccount)[1] + ", got: " +
+                        customerAccount.getBalance());
+                    System.out.println("Valid case: FAILED: Final balance was not the expected value.");
+                    return false;
+                }
+            }
+
+        } catch (IllegalArgumentException | InsufficientAccountBalanceException exception) {
+
+            if (exception instanceof IllegalArgumentException) {
+
+                return false;
+
+            } else if (exception instanceof InsufficientAccountBalanceException) {
+
+                System.out.println("Valid case: FAILED: Insufficient funds in a");
+                return false;
+            }
+        }
+
+        System.out.println("CustomerAccount test: PASSED");
+        return true;
     }
 
 }

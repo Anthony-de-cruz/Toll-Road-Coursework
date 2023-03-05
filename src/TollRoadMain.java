@@ -15,6 +15,7 @@ public class TollRoadMain {
 
         boolean passed = true;
 
+        passed = passed && CustomerAccount.main();
         passed = passed && Car.main();
         passed = passed && Truck.main();
         passed = passed && Van.main();
