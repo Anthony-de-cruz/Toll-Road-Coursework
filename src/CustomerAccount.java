@@ -138,7 +138,7 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
      */
     public static boolean main() {
 
-        // Valid test
+        /* ------------------------------- Valid tests ------------------------------ */
         // A collection of customer accounts with some funds to add and the expected balance after a trip.
         try {
 
@@ -172,13 +172,45 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
 
             if (exception instanceof IllegalArgumentException) {
 
+                System.out.println("Valid case: FAILED: Illegal argument passed on valid test.");
                 return false;
 
             } else if (exception instanceof InsufficientAccountBalanceException) {
 
-                System.out.println("Valid case: FAILED: Insufficient funds in a");
+                System.out.println("Valid case: FAILED: Insufficient funds for transaction.");
                 return false;
             }
+        }
+
+        /* ------------------------------ Invalid tests ----------------------------- */
+        // Testing invalid addFunds()
+        try {
+
+            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 10000, 
+                new Car("5555e", "Toyota", 5));
+
+            customer.addFunds(-100);
+
+            System.out.println("Invalid case: FAILED: Exception not thrown when negative funds were added.");
+            return false;
+
+        } catch (IllegalArgumentException exception) {
+            
+        }
+
+        // Testing makeTrip()
+        try {
+
+            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 0, 
+                new Van("g25e", "Mercedes", 1000));
+            
+            customer.makeTrip();
+
+            System.out.println("Invalid case: FAILED: Exception not thrown when trip was made without sufficient funds.");
+            return false;
+
+        } catch (InsufficientAccountBalanceException exception) {
+
         }
 
         System.out.println("CustomerAccount test: PASSED");
