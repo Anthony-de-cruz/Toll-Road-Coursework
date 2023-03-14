@@ -49,8 +49,7 @@ public class Van extends Vehicle {
         return payload;
     }
 
-    /* -------------------------------- Unit test ------------------------------- */
-
+    /* --------------------------- Unit test -------------------------- */
     /**
      * Test harness
      * 
@@ -58,7 +57,7 @@ public class Van extends Vehicle {
      */
     public static boolean main() {
 
-        // Valid test
+        /* -------------------------- Valid test -------------------------- */
         try {
 
             // Van, expected trip cost
@@ -90,7 +89,7 @@ public class Van extends Vehicle {
             return false;
         }
 
-        // Invalid test
+        /* ------------------------- Invalid test ------------------------- */
         try {
 
             Van invalidVan = new Van("B4D", "Vano", -10);
@@ -101,7 +100,7 @@ public class Van extends Vehicle {
             return false;
 
         } catch (IllegalArgumentException exception) {
-
+            // Intended to be thrown
         }
 
         System.out.println("Van test: PASSED");

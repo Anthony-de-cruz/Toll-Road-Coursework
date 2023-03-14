@@ -205,7 +205,7 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
             return false;
 
         } catch (IllegalArgumentException exception) {
-
+            // Intended to be thrown
         }
 
         // Testing makeTrip()
@@ -222,7 +222,7 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
             return false;
 
         } catch (InsufficientAccountBalanceException exception) {
-
+            // Intended to be thrown
         }
 
         System.out.println("CustomerAccount test: PASSED");

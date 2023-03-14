@@ -45,8 +45,7 @@ public class Car extends Vehicle {
         return this.numberOfSeats;
     }
 
-    /* -------------------------------- Unit test ------------------------------- */
-
+    /* --------------------------- Unit test -------------------------- */
     /**
      * Test harness
      * 
@@ -54,7 +53,7 @@ public class Car extends Vehicle {
      */
     public static boolean main() {
 
-        // Valid test
+        /* -------------------------- Valid test -------------------------- */
         try {
 
             // Car, expected trip cost
@@ -86,7 +85,7 @@ public class Car extends Vehicle {
             return false;
         }
 
-        // Invalid test
+        /* ------------------------- Invalid test ------------------------- */
         try {
 
             Car invalidCar = new Car("eee", "Vauxhall", -2);
@@ -97,7 +96,7 @@ public class Car extends Vehicle {
             return false;
 
         } catch (IllegalArgumentException exception) {
-
+            // Intended to be thrown
         }
 
         System.out.println("Car test: PASSED");
