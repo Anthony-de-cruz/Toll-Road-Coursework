@@ -18,6 +18,7 @@ public class TollRoadMain {
      */
     public static void runTests() {
 
+        // Each test returns whether or not it passed.
         boolean passed = true;
 
         passed = passed && Car.main();

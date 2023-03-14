@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The class to represent the toll road.
@@ -37,6 +38,11 @@ public class TollRoad {
     public CustomerAccount findCustomer(String regNum)
             throws CustomerNotFoundException {
 
+        CustomerAccount customer = this.customerAccounts.get(regNum);
+
+        if (Objects.isNull(customer)) {
+            throw new CustomerNotFoundException(regNum + " Not found.");
+        }
         return customerAccounts.get(regNum);
     }
 
@@ -81,6 +87,8 @@ public class TollRoad {
                 new CustomerAccount("Jesse", "Murica", 23100,
                         new Truck("BARN2", "Dodge", 2)) };
 
+        int expectedProfit = 3000;
+
         /* -------------------------- Valid tests ------------------------- */
         try {
 
@@ -108,6 +116,14 @@ public class TollRoad {
                 validTollRoad.chargeCustomer(registration);
             }
 
+            // Check that the final profit is correct
+            if (validTollRoad.getMoneyMade() != expectedProfit) {
+                System.out.println("TollRoad test: FAILED: "
+                        + " Incorrect profit. Expected: " + expectedProfit
+                        + ", got: " + validTollRoad.getMoneyMade());
+                return false;
+            }
+
         } catch (CustomerNotFoundException
                 | InsufficientAccountBalanceException exception) {
 
@@ -121,6 +137,49 @@ public class TollRoad {
                 System.out.println("TollRoad test: FAILED: "
                         + "InsufficientAccountBalanceException "
                         + " thrown during valid test.");
+                return false;
+            }
+        }
+
+        /* ------------------------- Invalid test ------------------------- */
+        // Test findCustomer()
+        try {
+            TollRoad invalidTollRoad = new TollRoad();
+
+            // Add customer
+            invalidTollRoad.addCustomer(new CustomerAccount("Amy", "AAAAAAA", 10,
+                    new Van("AAAA", "Mercedes", 900)));
+
+            System.out.println(invalidTollRoad.findCustomer("AAAABa"));
+
+            System.out.println("Invalid test: FAILED: "
+                    + "CustomerNotFoundException "
+                    + "not thrown when it was supposed to.");
+            return false;
+
+        } catch (CustomerNotFoundException exception) {
+            // Intended to be thrown
+        }
+
+        // Test chargeCustomer()
+        try {
+            TollRoad invalidTollRoad = new TollRoad();
+
+            // Add extra customer without any money
+            invalidTollRoad.addCustomer(new CustomerAccount("Amy", "AAAAAAA", 10,
+                    new Van("AAAA", "Mercedes", 900)));
+
+            invalidTollRoad.chargeCustomer("AAAA");
+
+            System.out.println("Invalid test: FAILED: "
+                    + "InsufficientAccountBalanceException "
+                    + "not thrown when it was supposed to.");
+            return false;
+
+        } catch (CustomerNotFoundException | InsufficientAccountBalanceException exception) {
+
+            if (exception instanceof CustomerNotFoundException) {
+                System.out.println("Invalid test: FAILED: Wrong exception thrown.");
                 return false;
             }
         }
