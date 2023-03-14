@@ -55,6 +55,24 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
     }
 
     /**
+     * Exists to centralise the application of discounts for consistency
+     * 
+     * @param value The value be deducted from
+     * @return New value
+     */
+    private int calculateDiscount(int value) {
+
+        if (this.discount == Discounts.STAFF) {
+            value = (int) Math.floor(value * 0.5d);
+
+        } else if (this.discount == Discounts.FRIENDS_AND_FAMILY) {
+            value = (int) Math.floor(value * 0.9d);
+        }
+
+        return value;
+    }
+
+    /**
      * Add credit to the account balance.
      * 
      * @param amount Positive amount of credits to be added in pence
@@ -79,13 +97,7 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
     public int makeTrip() throws InsufficientAccountBalanceException {
 
         int toll = this.vehicle.calculateBasicTripCost();
-
-        if (this.discount == Discounts.STAFF) {
-            toll = (int) Math.floor(toll * 0.5d);
-
-        } else if (this.discount == Discounts.FRIENDS_AND_FAMILY) {
-            toll = (int) Math.floor(toll * 0.9d);
-        }
+        toll = this.calculateDiscount(toll);
 
         if (toll > this.balance) {
             throw new InsufficientAccountBalanceException(

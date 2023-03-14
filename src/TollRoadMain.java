@@ -1,6 +1,11 @@
-/**
- * @author Anthony de Cruz
- */
+/*
+* By Anthony de Cruz
+*
+* Formatted with google-java-format-1.16.0
+* > Enum used in CustomerAccount
+* > Hashmap used as CustomerAccount collection
+*/
+
 public class TollRoadMain {
 
     public static void main(String[] args) {
@@ -28,5 +33,5 @@ public class TollRoadMain {
             System.out.println("<-- Test failed -->");
         }
     }
-    
+
 }
