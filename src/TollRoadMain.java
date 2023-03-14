@@ -15,10 +15,11 @@ public class TollRoadMain {
 
         boolean passed = true;
 
-        passed = passed && CustomerAccount.main();
         passed = passed && Car.main();
         passed = passed && Truck.main();
         passed = passed && Van.main();
+        passed = passed && CustomerAccount.main();
+        passed = passed && TollRoad.main();
 
         if (passed) {
             System.out.println("<-- All tests passed :) -->");

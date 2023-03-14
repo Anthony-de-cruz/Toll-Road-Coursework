@@ -6,9 +6,7 @@ import java.util.HashMap;
 public class CustomerAccount implements Comparable<CustomerAccount> {
 
     private enum Discounts {
-        STAFF,
-        FRIENDS_AND_FAMILY,
-        NONE
+        STAFF, FRIENDS_AND_FAMILY, NONE
     }
 
     private String firstName;
@@ -25,8 +23,8 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
      * @param balance   Customer's initial balance
      * @param vehicle   The vehicle associated with the customer
      */
-    public CustomerAccount(String firstName, String lastName,
-            int balance, Vehicle vehicle) {
+    public CustomerAccount(String firstName, String lastName, int balance,
+            Vehicle vehicle) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -75,9 +73,10 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
      * Calculate the customers basic trip cost and deduct the funds from their
      * account.
      * 
+     * @return The amount charged
      * @throws InsufficientAccountBalanceException
      */
-    public void makeTrip() throws InsufficientAccountBalanceException {
+    public int makeTrip() throws InsufficientAccountBalanceException {
 
         int toll = this.vehicle.calculateBasicTripCost();
 
@@ -90,10 +89,13 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
 
         if (toll > this.balance) {
             throw new InsufficientAccountBalanceException(
-                    "Customer lacks the sufficient funds to complete transaction.");
+                    "Customer lacks the sufficient "
+                            + "funds to complete transaction.");
         }
 
         this.balance -= toll;
+
+        return toll;
     }
 
     @Override
@@ -105,8 +107,8 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
      */
     public int compareTo(CustomerAccount customerAccount) {
 
-        return this.getVehicle().getRegistration().compareTo(
-                customerAccount.getVehicle().getRegistration());
+        return this.getVehicle().getRegistration()
+                .compareTo(customerAccount.getVehicle().getRegistration());
     }
 
     public String getFirstName() {
@@ -129,84 +131,94 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
         return this.discount;
     }
 
-    /* -------------------------------- Unit test ------------------------------- */
-
+    /* --------------------------- Unit test -------------------------- */
     /**
-     * Test harness
+     * Test harness.
      * 
      * @return Whether or the class passed the test
      */
     public static boolean main() {
 
-        /* ------------------------------- Valid tests ------------------------------ */
-        // A collection of customer accounts with some funds to add and the expected balance after a trip.
+        /* -------------------------- Valid tests ------------------------- */
+        // A collection of customer accounts with some funds to add and the
+        // expected
+        // balance after a trip.
         try {
 
             // (CustomerAccount, funds to add, final funds expected)
             HashMap<CustomerAccount, int[]> validCstmr = new HashMap<>();
 
             validCstmr.put(new CustomerAccount("Jimmy", "Jones", 1500,
-                    new Car("ee", "Honda", 5)), new int[]{0, 1000});
+                    new Car("ee", "Honda", 5)), new int[] { 0, 1000 });
             validCstmr.put(new CustomerAccount("Bob", "Bones", 2400,
-                    new Car("eee", "Bonda", 8)), new int[]{200, 2000});
-            validCstmr.put(new CustomerAccount("Bobby", "Rones", 2000,
-                    new Van("eeee", "Bondaee", 1000)), new int[]{1000, 2000});
-            
-            
+                    new Car("eee", "Bonda", 8)), new int[] { 200, 2000 });
+            validCstmr.put(
+                    new CustomerAccount("Bobby", "Rones", 2000,
+                            new Van("eeee", "Bondaee", 1000)),
+                    new int[] { 1000, 2000 });
+
             for (CustomerAccount customerAccount : validCstmr.keySet()) {
 
                 customerAccount.addFunds(validCstmr.get(customerAccount)[0]);
                 customerAccount.makeTrip();
 
-                if (customerAccount.getBalance() != validCstmr.get(customerAccount)[1]) {
+                if (customerAccount
+                        .getBalance() != validCstmr.get(customerAccount)[1]) {
 
-                    System.out.println("Expected: " +
-                        validCstmr.get(customerAccount)[1] + ", got: " +
-                        customerAccount.getBalance());
-                    System.out.println("Valid case: FAILED: Final balance was not the expected value.");
+                    System.out.println(
+                            "Expected: " + validCstmr.get(customerAccount)[1]
+                                    + ", got: " + customerAccount.getBalance());
+                    System.out.println("Valid case: FAILED: "
+                            + "Final balance was not the expected value.");
                     return false;
                 }
             }
 
-        } catch (IllegalArgumentException | InsufficientAccountBalanceException exception) {
+        } catch (IllegalArgumentException
+                | InsufficientAccountBalanceException exception) {
 
             if (exception instanceof IllegalArgumentException) {
 
-                System.out.println("Valid case: FAILED: Illegal argument passed on valid test.");
+                System.out.println(
+                        "Valid case: FAILED: Illegal argument passed on valid test.");
                 return false;
 
             } else if (exception instanceof InsufficientAccountBalanceException) {
 
-                System.out.println("Valid case: FAILED: Insufficient funds for transaction.");
+                System.out.println(
+                        "Valid case: FAILED: Insufficient funds for transaction.");
                 return false;
             }
         }
 
-        /* ------------------------------ Invalid tests ----------------------------- */
+        /* ------------------------- Invalid tests ------------------------ */
         // Testing invalid addFunds()
         try {
 
-            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 10000, 
-                new Car("5555e", "Toyota", 5));
+            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 10000,
+                    new Car("5555e", "Toyota", 5));
 
             customer.addFunds(-100);
 
-            System.out.println("Invalid case: FAILED: Exception not thrown when negative funds were added.");
+            System.out.println("Invalid case: FAILED: "
+                    + "Exception not thrown when negative funds were added.");
             return false;
 
         } catch (IllegalArgumentException exception) {
-            
+
         }
 
         // Testing makeTrip()
         try {
 
-            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 0, 
-                new Van("g25e", "Mercedes", 1000));
-            
+            CustomerAccount customer = new CustomerAccount("Bob", "Bobb", 0,
+                    new Van("g25e", "Mercedes", 1000));
+
             customer.makeTrip();
 
-            System.out.println("Invalid case: FAILED: Exception not thrown when trip was made without sufficient funds.");
+            System.out.println(
+                    "Invalid case: FAILED: "
+                            + "Exception not thrown when trip was made without sufficient funds.");
             return false;
 
         } catch (InsufficientAccountBalanceException exception) {
