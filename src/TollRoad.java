@@ -61,6 +61,17 @@ public class TollRoad {
         this.moneyMade += customer.makeTrip();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+
+        for (String registration : this.customerAccounts.keySet()) {
+            string.append(this.customerAccounts.get(registration).toString());
+        }
+
+        return string.toString();
+    }
+
     public Map<String, CustomerAccount> getCustomerAccounts() {
         return this.customerAccounts;
     }

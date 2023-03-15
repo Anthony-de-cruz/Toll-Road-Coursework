@@ -123,6 +123,12 @@ public class CustomerAccount implements Comparable<CustomerAccount> {
                 .compareTo(customerAccount.getVehicle().getRegistration());
     }
 
+    @Override
+    public String toString() {
+        return this.firstName + ", " + this.lastName + ", " + this.balance
+                + ", " + this.vehicle.toString() + ", " + this.discount + "\n";
+    }
+
     public String getFirstName() {
         return this.firstName;
     }

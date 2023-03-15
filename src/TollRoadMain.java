@@ -3,8 +3,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.management.InvalidAttributeValueException;
-
 /*
 * By Anthony de Cruz
 *
@@ -20,7 +18,9 @@ public class TollRoadMain {
         runTests();
 
         try {
-            simulateFromFile(initialiseTollRoadFromFile());
+            int profit = simulateFromFile(initialiseTollRoadFromFile());
+
+            System.out.println("Total Profit: " + profit);
 
         } catch (IOException exception) {
             System.out.println("Something went wrong with the datasets:");
@@ -103,16 +103,17 @@ public class TollRoadMain {
 
             tollRoad.addCustomer(customer);
         }
-        tollRoad.toString();
+
         return tollRoad;
     }
 
     /**
      * Simulate the toll roads transactions from transactions.txt.
      * 
-     * @param road The TollRoad object to be used.
+     * @param road The TollRoad object to be used
+     * @return Total profit
      */
-    public static void simulateFromFile(TollRoad road) throws IOException {
+    public static int simulateFromFile(TollRoad road) throws IOException {
 
         ArrayList<String> transactionData = new ArrayList<>();
 
@@ -122,7 +123,50 @@ public class TollRoadMain {
             throw exception;
         }
 
-        System.out.println(transactionData.get(5));
+        for (String transaction : transactionData) {
+
+            String[] values = transaction.split(",");
+
+            try {
+
+                switch (values[0]) {
+
+                    case ("addFunds"):
+                        road.findCustomer(values[1]).addFunds(Integer.parseInt(values[2]));
+                        System.out.println(values[1] + ": " + values[2] + " added successfully");
+                        break;
+
+                    case ("makeTrip"):
+                        road.chargeCustomer(values[1]);
+                        System.out.println(values[1] + ": Trip completed successfully");
+                        break;
+                }
+
+            } catch (CustomerNotFoundException
+                    | InsufficientAccountBalanceException
+                    | IllegalArgumentException exception) {
+
+                if (exception instanceof CustomerNotFoundException) {
+                    System.out.println(values[1]
+                            + ": makeTrip failed. CustomerAccount does not exist.");
+                    continue;
+                }
+
+                if (exception instanceof InsufficientAccountBalanceException) {
+                    System.out.println(values[1]
+                            + ": makeTrip failed. Insufficient funds.");
+                    continue;
+                }
+
+                if (exception instanceof IllegalArgumentException) {
+                    System.out.println(values[1]
+                            + ": makeTrip failed. Invalid amount of funds.");
+                    continue;
+                }
+            }
+        }
+
+        return road.getMoneyMade();
     }
 
     /**
@@ -130,7 +174,7 @@ public class TollRoadMain {
      * 
      * @param delimiter The entry regex delimiter
      * @param path      The file path
-     * @return The list of entries.
+     * @return The list of entries
      * @throws IOException
      */
     private static ArrayList<String> readData(String delimiter, String path)
@@ -167,7 +211,7 @@ public class TollRoadMain {
         passed = passed && TollRoad.main();
 
         if (passed) {
-            System.out.println("<-- All tests passed :) -->");
+            System.out.println("<-- All tests passed :) -->\n");
 
         } else {
             System.out.println("<-- Test failed -->");
